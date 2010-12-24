@@ -1,6 +1,9 @@
 package WebService::VaultPress::Partner::Response;
 use Moose;
 
+our $VERSION = '0.02';
+$VERSION = eval $VERSION;
+
 has is_success  => ( is => 'ro', isa => 'Str', required => 1 );
 has api_call    => ( is => 'ro', isa => 'Str' );
 has error       => ( is => 'ro', isa => 'Str' );

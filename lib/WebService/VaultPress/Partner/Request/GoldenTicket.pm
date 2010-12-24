@@ -1,6 +1,9 @@
 package WebService::VaultPress::Partner::Request::GoldenTicket;
 use Moose;
 
+our $VERSION = '0.02';
+$VERSION = eval $VERSION;
+
 has api => (
     is       => 'ro',
     isa      => 'Str',

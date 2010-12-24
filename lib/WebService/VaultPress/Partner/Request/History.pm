@@ -2,6 +2,9 @@ package WebService::VaultPress::Partner::Request::History;
 use Moose;
 use Moose::Util::TypeConstraints;
 
+our $VERSION = '0.02';
+$VERSION = eval $VERSION;
+
 my $abs_int     = subtype as 'Int', where { $_ >= 0 };
 my $limited_int = subtype as 'Int', where { $_ >= 1 and $_ <= 500  };
 
