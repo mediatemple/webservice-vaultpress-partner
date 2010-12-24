@@ -8,6 +8,9 @@ use WebService::VaultPress::Partner::Request::Usage;
 use Moose;
 use JSON;
 use LWP;
+use Moose::Util::TypeConstraints;
+
+my $abs_int     = subtype as 'Int', where { $_ >= 0 };
 
 our $VERSION = '0.02';
 $VERSION = eval $VERSION;
@@ -22,12 +25,8 @@ has 'key' => (
 
 has 'timeout' => (
     is      => 'ro',
-    isa     => 'Int',
+    isa     => $abs_int,
     default => 30,
-    trigger => sub {
-        die __PACKAGE__ . "->timeout() must be a positive number."
-            unless shift->timeout > 0;
-    }
 );
 
 has 'user_agent' => (
