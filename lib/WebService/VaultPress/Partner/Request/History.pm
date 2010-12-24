@@ -1,6 +1,4 @@
 package WebService::VaultPress::Partner::Request::History;
-use strict;
-use warnings;
 use Moose;
 use Moose::Util::TypeConstraints;
 

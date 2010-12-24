@@ -1,9 +1,4 @@
 package WebService::VaultPress::Partner::Response;
-BEGIN {
-  $WebService::VaultPress::Partner::Response::VERSION = '0.01.00';
-}
-use warnings;
-use strict;
 use Moose;
 
 has is_success  => ( is => 'ro', isa => 'Str', required => 1 );

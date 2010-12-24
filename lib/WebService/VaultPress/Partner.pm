@@ -1,6 +1,4 @@
 package WebService::VaultPress::Partner;
-use strict;
-use warnings;
 use WebService::VaultPress::Partner::Response;
 use WebService::VaultPress::Partner::Request::GoldenTicket;
 use WebService::VaultPress::Partner::Request::History;

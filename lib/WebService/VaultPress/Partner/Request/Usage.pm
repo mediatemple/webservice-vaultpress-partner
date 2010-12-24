@@ -1,9 +1,4 @@
 package WebService::VaultPress::Partner::Request::Usage;
-BEGIN {
-  $WebService::VaultPress::Partner::Request::Usage::VERSION = '0.01.00';
-}
-use strict;
-use warnings;
 use Moose;
 
 has api => (
