@@ -16,7 +16,7 @@ has api => (
 
 has limit => (
     is       => 'ro',
-    isa      => $limited,
+    isa      => $limited_int,
     default  => 100,
 );
 

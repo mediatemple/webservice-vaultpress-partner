@@ -35,7 +35,13 @@ has 'user_agent' => (
 
 no Moose;
 
-sub CreateGoldenTicket {
+# CamelCase linking to Perly methods.
+*CreateGoldenTicket     = *create_golden_ticket;
+*GetUsage               = *get_usage;
+*GetHistory             = *get_history;
+*GetRedeemedHistory     = *get_redeemed_history;
+
+sub create_golden_ticket {
     my ( $self, %request ) = @_;
 
     my $req = WebService::VaultPress::Partner::Request::GoldenTicket->new( %request );
@@ -63,7 +69,7 @@ sub CreateGoldenTicket {
     );
 }
 
-sub GetUsage {
+sub get_usage {
     my ( $self, %request ) = @_;
     
     my $req = WebService::VaultPress::Partner::Request::Usage->new( %request );
@@ -87,7 +93,7 @@ sub GetUsage {
     );
 }
 
-sub GetHistory {
+sub get_history {
     my ( $self, %request ) = @_;
     
     my $req = WebService::VaultPress::Partner::Request::History->new( %request );
@@ -134,7 +140,7 @@ sub GetHistory {
 
 # This isn't in the spec, but it will be very useful in some reports,
 # and it's on line of code.
-sub GetRedeemedHistory {
+sub get_redeemed_history {
     return grep { $_->redeemed ne '0000-00-00 00:00:00' } shift->GetHistory(@_);
 }
 
