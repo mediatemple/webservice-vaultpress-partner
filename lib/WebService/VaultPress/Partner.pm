@@ -1,7 +1,4 @@
 package WebService::VaultPress::Partner;
-BEGIN {
-  $WebService::VaultPress::Partner::VERSION = '0.01.00';
-}
 use strict;
 use warnings;
 use WebService::VaultPress::Partner::Response;
@@ -11,6 +8,9 @@ use WebService::VaultPress::Partner::Request::Usage;
 use Moose;
 use JSON;
 use LWP;
+
+our $VERSION = '0.02';
+$VERSION = eval $VERSION;
 
 my %cache;
 
@@ -33,8 +33,7 @@ has 'timeout' => (
 has 'user_agent' => (
     is  => 'ro',
     isa => 'Str',
-    default => 'WebService::VaultPress::Partner/' .
-        $WebService::VaultPress::Partner::VERSION,
+    default => 'WebService::VaultPress::Partner/' . $VERSION,
 );
 
 no Moose;
