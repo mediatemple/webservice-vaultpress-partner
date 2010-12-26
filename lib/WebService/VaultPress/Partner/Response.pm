@@ -5,9 +5,7 @@ use namespace::autoclean;
 our $VERSION = '0.02';
 $VERSION = eval $VERSION;
 
-has is_success  => ( is => 'ro', isa => 'Str', required => 1 );
 has api_call    => ( is => 'ro', isa => 'Str' );
-has error       => ( is => 'ro', isa => 'Str' );
 has ticket      => ( is => 'ro', isa => 'Str' );
 has unused      => ( is => 'ro', isa => 'Int' );
 has basic       => ( is => 'ro', isa => 'Int' );

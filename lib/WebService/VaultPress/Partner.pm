@@ -68,7 +68,7 @@ sub create_golden_ticket {
     my $json = decode_json( $res->content );
     
     # The API tells us if the call failed.
-    die $json->{reason} if $json->{status};
+    die $json->{reason} unless $json->{status};
 
     return WebService::VaultPress::Partner::Response->new(
         api_call        => 'CreateGoldenTicket',
