@@ -34,6 +34,13 @@ has 'user_agent' => (
     default => 'WebService::VaultPress::Partner/' . $VERSION,
 );
 
+has _ua => (
+    is      => 'ro',
+    init_arg => undef,
+    builder => '_build_ua',
+);
+
+
 no Moose;
 
 # CamelCase linking to Perly methods.
@@ -116,7 +123,7 @@ sub get_history {
 
     # If the call was successful, we should have
     # an array ref.
-    die $json->{reason} unless ( ref $json wq 'ARRAY' );
+    die $json->{reason} unless ( ref $json eq 'ARRAY' );
 
     my @responses;
     for my $elem ( @{$json} ) {
@@ -139,11 +146,10 @@ sub get_redeemed_history {
     return grep { $_->redeemed ne '0000-00-00 00:00:00' } shift->GetHistory(@_);
 }
 
-sub _ua {
+sub _build_ua {
     my ( $self ) = @_;
-
-    return $cache{'ua'} ||= LWP::UserAgent->new(
-        agent   => $self->user_agent,
+    return LWP::UserAgent->new(
+        agent => $self->user_agent, 
         timeout => $self->timeout,
     );
 }
