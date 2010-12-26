@@ -4,11 +4,12 @@ use WebService::VaultPress::Partner::Request::GoldenTicket;
 use WebService::VaultPress::Partner::Request::History;
 use WebService::VaultPress::Partner::Request::Usage;
 use Moose;
+use Carp;
 use JSON;
 use LWP;
 use Moose::Util::TypeConstraints;
 
-my $abs_int     = subtype as 'Int', where { $_ >= 0 };
+my $abs_int = subtype as 'Int', where { $_ >= 0 };
 
 our $VERSION = '0.02';
 $VERSION = eval $VERSION;
@@ -57,14 +58,15 @@ sub create_golden_ticket {
     );
 
     # Check for HTTP transaction error (timeouts, etc)
-    my $err = $self->_http_error( $res ); return $err if $err;
+    $self->_croak_on_http_error( $res );
 
     my $json = decode_json( $res->content );
+    
+    # The API tells us if the call failed.
+    die $json->{reason} if $json->{status};
 
     return WebService::VaultPress::Partner::Response->new(
         api_call        => 'CreateGoldenTicket',
-        is_success      => exists $json->{status} ? 1 : 0,
-        error           => exists $json->{reason} ? "[API] " . $json->{reason} : "",
         ticket          => exists $json->{url}    ? $json->{url} : "",
     );
 }
@@ -77,15 +79,15 @@ sub get_usage {
     my $res = $self->_ua->post( $req->api, { key => $self->key } );
     
     # Check for HTTP transaction error (timeouts, etc)
-    my $err = $self->_http_error( $res ); return $err if $err;
+    $self->_croak_on_http_error( $res );
 
     my $json = decode_json( $res->content );
 
+    # If GetUsage has a status, the call failed.
+    die $json->{reason} if exists $json->{status};
+
     return WebService::VaultPress::Partner::Response->new(
         api_call        => 'GetUsage',
-        # status is only seen during a failure for this call.
-        is_success      => exists $json->{status}  ? 0 : 1, 
-        error           => exists $json->{reason}  ? "[API] " . $json->{reason} : "",
         unused          => exists $json->{unused}  ? $json->{unused}  : 0,
         basic           => exists $json->{basic}   ? $json->{basic}   : 0,
         premium         => exists $json->{premium} ? $json->{premium} : 0,
@@ -108,25 +110,18 @@ sub get_history {
     );
     
     # Check for HTTP transaction error (timeouts, etc)
-    my $err = $self->_http_error( $res ); return $err if $err;
+    $self->_croak_on_http_error( $res );
 
     my $json = decode_json( $res->content );
 
     # If the call was successful, we should have
     # an array ref.
-    if ( ! ( ref $json eq 'ARRAY' ) ) {
-        return WebService::VaultPress::Partner::Response->new(
-            api_call    => 'GetHistory',
-            is_success  => 0,
-            error       => exists $json->{reason} ? "[API] " . $json->{reason} : "",
-        );
-    }
+    die $json->{reason} unless ( ref $json wq 'ARRAY' );
 
     my @responses;
     for my $elem ( @{$json} ) {
         push @responses, WebService::VaultPress::Partner::Response->new(
             api_call    => 'GetHistory',
-            is_success  => 1,
             email       => $elem->{email}       ? $elem->{email}        : "",
             lname       => $elem->{lname}       ? $elem->{lname}        : "",
             fname       => $elem->{fname}       ? $elem->{fname}        : "",
@@ -153,14 +148,10 @@ sub _ua {
     );
 }
 
-sub _http_error {
+sub _croak_on_http_error {
     my ( $self, $res ) = @_;
 
-    return WebService::VaultPress::Partner::Response->new(
-        is_success => 0,
-        error      => "[HTTP] " . $res->status_line,
-    ) unless $res->is_success;
-    
+    croak $res->status_line unless $res->is_success;
     return 0;
 }
 
