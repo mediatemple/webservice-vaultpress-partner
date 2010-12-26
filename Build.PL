@@ -20,7 +20,7 @@ my %module_build_args = (
     'SymKat <symkat@symkat.com>'
   ],
   'dist_name' => 'WebService-VaultPress-Partner',
-  'dist_version' => '0.02',
+  'dist_version' => '0.03',
   'license' => 'bsd',
   'module_name' => 'WebService::VaultPress::Partner',
   'recommends' => {},
