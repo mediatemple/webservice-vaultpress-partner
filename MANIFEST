@@ -3,6 +3,7 @@ LICENSE
 MANIFEST
 META.yml
 Makefile.PL
+README.md
 dist.ini
 lib/WebService/VaultPress/Partner.pm
 lib/WebService/VaultPress/Partner/Request/GoldenTicket.pm

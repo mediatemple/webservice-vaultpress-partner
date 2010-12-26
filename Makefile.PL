@@ -25,11 +25,14 @@ my %WriteMakefileArgs = (
   'LICENSE' => 'bsd',
   'NAME' => 'WebService::VaultPress::Partner',
   'PREREQ_PM' => {
+    'Carp' => '0',
     'JSON' => '0',
     'LWP' => '0',
-    'Moose' => '0'
+    'Moose' => '0',
+    'Moose::Util::TypeConstraints' => '0',
+    'namespace::autoclean' => '0'
   },
-  'VERSION' => '0.01.00',
+  'VERSION' => '0.02',
   'test' => {
     'TESTS' => 't/*.t'
   }
