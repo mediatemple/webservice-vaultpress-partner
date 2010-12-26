@@ -22,5 +22,4 @@ requires:
   LWP: 0
   Moose: 0
   Moose::Util::TypeConstraints: 0
-  namespace::autoclean: 0
-version: 0.03
+version: 0.04

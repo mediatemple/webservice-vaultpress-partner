@@ -20,7 +20,7 @@ my %module_build_args = (
     'SymKat <symkat@symkat.com>'
   ],
   'dist_name' => 'WebService-VaultPress-Partner',
-  'dist_version' => '0.03',
+  'dist_version' => '0.04',
   'license' => 'bsd',
   'module_name' => 'WebService::VaultPress::Partner',
   'recommends' => {},
@@ -30,8 +30,7 @@ my %module_build_args = (
     'JSON' => '0',
     'LWP' => '0',
     'Moose' => '0',
-    'Moose::Util::TypeConstraints' => '0',
-    'namespace::autoclean' => '0'
+    'Moose::Util::TypeConstraints' => '0'
   },
   'script_files' => []
 );
