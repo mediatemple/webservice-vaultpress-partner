@@ -3,7 +3,7 @@ use Moose;
 use Moose::Util::TypeConstraints;
 use namespace::autoclean;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 $VERSION = eval $VERSION;
 
 my $abs_int     = subtype as 'Int', where { $_ >= 0 };
@@ -37,60 +37,56 @@ WebService::VaultPress::Partner::Request::History - The VaultPress Partner API C
 
 =head1 VERSION
 
-version 0.01.00
+version 0.03
 
 =head1 SYNOPSIS
-
+  
   #!/usr/bin/perl
   use warnings;
   use strict;
-  use Carp;
+  use lib 'lib';
   use WebService::VaultPress::Partner;
-
-  my $VP = WebService::VaultPress::Partner->new(
-      key => 'Your Key Goes Here',
+  
+  
+  my $vp = WebService::VaultPress::Partner->new(
+      key => 'Your API Key Goes Here',
   );
-
-  sub handle_error {
-      my ( $res ) = @_;
-      croak "Failed during " . $res->api_call . " with error: " . $res->error
-          unless $res->is_success;
+  
+  my $result = eval { $vp->GetUsage };
+  
+  if ( $@ ) {
+      print "->GetUsage had an error: $@";
+  } else {
+      printf( "%7s => %5d\n", $_, $result->$_ ) for qw/ unused basic premium /;
   }
-
-  # How many people signed up.
-  my $result = $VP->GetUsage; 
-
-  handle_error($result);
-
-  printf( "%7s => %5d\n", $_, $result->$_ ) for qw/ unused basic premium /;
-
-
-  # Print A Nice History Listing
-  printf( "\033[1m| %-20s | %-20s | %-30s | %-19s | %-19s | %-7s |\n\033[0m", 
-      "First Name", "Last Name", "Email Address", "Created", "Redeemed", "Type");
-
-  my @results = $VP->GetHistory; 
-
-  handle_error( $results[0] );
-
-  for my $obj ( $VP->GetHistory ) {
-      printf( "| %-20s | %-20s | %-30s | %-19s | %-19s | %-7s |\n", $obj->fname, 
-          $obj->lname, $obj->email, $obj->created, $obj->redeemed, $obj->type );
+  
+  
+  
+  my @results = $vp->GetHistory;
+  
+  if ( $@ ) {
+      print "->GetHistory had an error: $@";
+  } else {
+      for my $res ( @results ) {
+      printf( "| %-20s | %-20s | %-30s | %-19s | %-19s | %-7s |\n", $res->fname,
+          $res->lname, $res->email, $res->created, $res->redeemed, $res->type );
+      }
   }
-
-
+  
   # Give Alan Shore a 'Golden Ticket' to VaultPress
-
-  my $ticket = $VP->CreateGoldenTicket(
+  
+  my $ticket = eval { $vp->CreateGoldenTicket(
       fname => 'Alan',
       lname => 'Shore',
       email => 'alan.shore@gmail.com',
-  ); 
-
-  handle_error( $ticket );
-
-  print "You can sign up for your VaultPress account <a href=\"" 
-      . $ticket->ticket ."\">Here!</a>\n";
+  ); };
+  
+  if ( $@ ) {
+      print "->CreateGoldenTicket had an error: $@";
+  } else {
+      print "You can sign up for your VaultPress account <a href=\""
+          . $ticket->ticket ."\">Here!</a>\n";
+  }
 
 =head1 DESCRIPTION
 

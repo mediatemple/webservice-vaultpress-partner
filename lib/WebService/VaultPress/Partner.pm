@@ -12,7 +12,7 @@ use namespace::autoclean;
 
 my $abs_int = subtype as 'Int', where { $_ >= 0 };
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 $VERSION = eval $VERSION;
 
 my %cache;
@@ -172,60 +172,54 @@ WebService::VaultPress::Partner - The VaultPress Partner API Client
 
 =head1 VERSION
 
-version 0.01.00
+version 0.03
 
 =head1 SYNOPSIS
 
   #!/usr/bin/perl
   use warnings;
   use strict;
-  use Carp;
+  use lib 'lib';
   use WebService::VaultPress::Partner;
-
-  my $VP = WebService::VaultPress::Partner->new(
-      key => 'Your Key Goes Here',
+  
+  
+  my $vp = WebService::VaultPress::Partner->new(
+      key => 'Your API Key Goes Here',
   );
-
-  sub handle_error {
-      my ( $res ) = @_;
-      croak "Failed during " . $res->api_call . " with error: " . $res->error
-          unless $res->is_success;
-  }
-
-  # How many people signed up.
-  my $result = $VP->GetUsage;
   
-  handle_error($result);
-
-  printf( "%7s => %5d\n", $_, $result->$_ ) for qw/ unused basic premium /;
-
-
-  # Print A Nice History Listing
-  printf( "\033[1m| %-20s | %-20s | %-30s | %-19s | %-19s | %-7s |\n\033[0m", 
-      "First Name", "Last Name", "Email Address", "Created", "Redeemed", "Type");
-
-  my @results = $VP->GetHistory; 
+  my $result = eval { $vp->GetUsage };
   
-  handle_error( $results[0] );
-
-  for my $obj ( $VP->GetHistory ) {
-      printf( "| %-20s | %-20s | %-30s | %-19s | %-19s | %-7s |\n", $obj->fname, 
-          $obj->lname, $obj->email, $obj->created, $obj->redeemed, $obj->type );
+  if ( $@ ) {
+      print "->GetUsage had an error: $@";
+  } else {
+      printf( "%7s => %5d\n", $_, $result->$_ ) for qw/ unused basic premium /;
   }
-
-
+  
+  my @results = $vp->GetHistory;
+  
+  if ( $@ ) {
+      print "->GetHistory had an error: $@";
+  } else {
+      for my $res ( @results ) {
+      printf( "| %-20s | %-20s | %-30s | %-19s | %-19s | %-7s |\n", $res->fname,
+          $res->lname, $res->email, $res->created, $res->redeemed, $res->type );
+      }
+  }
+  
   # Give Alan Shore a 'Golden Ticket' to VaultPress
-
-  my $ticket = $VP->CreateGoldenTicket(
+  
+  my $ticket = eval { $vp->CreateGoldenTicket(
       fname => 'Alan',
       lname => 'Shore',
       email => 'alan.shore@gmail.com',
-  ); 
+  ); };
   
-  handle_error( $ticket );
-
-  print "You can sign up for your VaultPress account <a href=\"" 
-      . $ticket->ticket ."\">Here!</a>\n";
+  if ( $@ ) {
+      print "->CreateGoldenTicket had an error: $@";
+  } else {
+      print "You can sign up for your VaultPress account <a href=\""
+          . $ticket->ticket ."\">Here!</a>\n";
+  }
 
 =head1 DESCRIPTION
 
@@ -239,9 +233,12 @@ handful of WebService::VaultPress::Partner::Request modules as well as a respons
 WebService::VaultPress::Partner::Response, that provides consistent error and success 
 methods.
 
+Error handling is done by die'ing when we run into problems.  Use your favorite
+exception handling style to grab errors.
+
 =head1 METHODS
 
-=head2 Constructure
+=head2 Constructor
 
   WebService::VaultPress::Partner->new(
       timeout => 30,
@@ -249,7 +246,7 @@ methods.
       key => "i have a vaultpress key",
   );
 
-The constructure takes the following input:
+The constructor takes the following input:
 
 =over 4
 
@@ -267,19 +264,19 @@ The constructure takes the following input:
 
 =back
 
-The constructure returns a WebService::VaultPress::Partner object.
+The constructor returns a WebService::VaultPress::Partner object.
 
 =head2 CreateGoldenTicket
 
 The CreateGoldenTicket method provides an interface for creating signup
 URLs for VaultPress.
 
-  $ticket = $VP->CreateGoldenTicket(
+  $ticket = eval { $vp->CreateGoldenTicket(
       api => "https://partner-api.vaultpress.com/gtm/1.0/",
       email => "alan.shore@gmail.com",
       fname => "Alan",
       lname => "Shore",
-  );
+  ); };
 
 =over 4
 
@@ -316,21 +313,11 @@ object with the following methods:
 
 The method called to generate the response.  In this case 'CreateGoldenTicket'.
 
-=item is_success
-
-True if the request was successful, otherwise false.  1 and 0 respectively.
-
-=item error
-
-When is_success is false, an error string is contained here, otherwise "".
-
 =item ticket
 
-When is_success is set true, the URL for the user to redeem their golden ticket
-is set here.
+The URL for the user to redeem their golden ticket is set here.
 
 =back
-
 
 =back
 
@@ -366,22 +353,15 @@ An offset of 100 with a limit of 100 will return the 101th to 200th result.
 
 =item OUTPUT
 
-This method returns an array of WebService::VaultPress::Partner::Response objects.  In the case
-of an error, there will be one element of the array with is_success set false, error
-set to the error string, and api_call set to 'GetHistory'.
+This method returns an array of WebService::VaultPress::Partner::Response objects.
 
-When there is not an error, the following will be set:
+The following will be set:
 
 =over 4
 
 =item api_call
 
 This will be set to 'GetHistory'
-
-=item is_success
-
-If the first element of the array is successful (1), all later entries
-are guaranteed to be 1.
 
 =item email
 
@@ -452,15 +432,6 @@ The URL to send the request to.  Default: https://partner-api.vaultpress.com/gtm
 =item api_call
 
 This will be set to 'GetUsage'.
-
-=item is_success
-
-Is successful this will be set true (1) otherwise it will be false (0).
-
-=item error
-
-Is is_success is false (0) this will contain an error string detailing the 
-failure.  Otherwise it will be "".
 
 =item unused
 
