@@ -1,8 +1,7 @@
 package WebService::VaultPress::Partner::Response;
 use Moose;
-use namespace::autoclean;
 
-our $VERSION = '0.02';
+our $VERSION = '0.04';
 $VERSION = eval $VERSION;
 
 has api_call    => ( is => 'ro', isa => 'Str' );
@@ -27,7 +26,7 @@ WebService::VaultPress::Partner::Response - The VaultPress Partner API Client Re
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 SYNOPSIS
   

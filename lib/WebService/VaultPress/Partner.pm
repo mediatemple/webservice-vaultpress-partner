@@ -8,11 +8,10 @@ use Carp;
 use JSON;
 use LWP;
 use Moose::Util::TypeConstraints;
-use namespace::autoclean;
 
 my $abs_int = subtype as 'Int', where { $_ >= 0 };
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 $VERSION = eval $VERSION;
 
 my %cache;
@@ -40,6 +39,8 @@ has _ua => (
     init_arg => undef,
     builder => '_build_ua',
 );
+
+no Moose;
 
 # CamelCase linking to Perly methods.
 *CreateGoldenTicket     = *create_golden_ticket;
@@ -172,7 +173,7 @@ WebService::VaultPress::Partner - The VaultPress Partner API Client
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 SYNOPSIS
 
