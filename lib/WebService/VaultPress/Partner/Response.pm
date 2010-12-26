@@ -1,5 +1,6 @@
 package WebService::VaultPress::Partner::Response;
 use Moose;
+use namespace::autoclean;
 
 our $VERSION = '0.02';
 $VERSION = eval $VERSION;

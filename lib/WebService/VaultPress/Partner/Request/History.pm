@@ -1,6 +1,7 @@
 package WebService::VaultPress::Partner::Request::History;
 use Moose;
 use Moose::Util::TypeConstraints;
+use namespace::autoclean;
 
 our $VERSION = '0.02';
 $VERSION = eval $VERSION;

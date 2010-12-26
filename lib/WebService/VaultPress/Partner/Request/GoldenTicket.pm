@@ -1,5 +1,6 @@
 package WebService::VaultPress::Partner::Request::GoldenTicket;
 use Moose;
+use namespace::autoclean;
 
 our $VERSION = '0.02';
 $VERSION = eval $VERSION;

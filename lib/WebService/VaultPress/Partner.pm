@@ -8,6 +8,7 @@ use Carp;
 use JSON;
 use LWP;
 use Moose::Util::TypeConstraints;
+use namespace::autoclean;
 
 my $abs_int = subtype as 'Int', where { $_ >= 0 };
 
@@ -39,9 +40,6 @@ has _ua => (
     init_arg => undef,
     builder => '_build_ua',
 );
-
-
-no Moose;
 
 # CamelCase linking to Perly methods.
 *CreateGoldenTicket     = *create_golden_ticket;
