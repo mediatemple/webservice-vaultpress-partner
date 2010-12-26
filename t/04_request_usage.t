@@ -8,21 +8,20 @@ use WebService::VaultPress::Partner::Request::Usage;
 
 # Expected Defaults
 
-ok my $Obj = WebService::VaultPress::Partner::Request::Usage->new();
+ok my $vp = WebService::VaultPress::Partner::Request::Usage->new();
 
-is $Obj->api, "https://partner-api.vaultpress.com/gtm/1.0/summary";
-isnt $Obj->api, "Something else?";
+is $vp->api, "https://partner-api.vaultpress.com/gtm/1.0/summary";
 
 # Constructure assigns accessors as expected.
 
-ok $Obj = WebService::VaultPress::Partner::Request::Usage->new(
+ok $vp = WebService::VaultPress::Partner::Request::Usage->new(
     api => "Daily, I am amazed at your inexhaustible ability to just live.",
 );
 
-is $Obj->api, "Daily, I am amazed at your inexhaustible ability to just live.",
+is $vp->api, "Daily, I am amazed at your inexhaustible ability to just live.",
     "Api method expected.";
 
-isnt $Obj->api, "Only if I plead guilty which is, of course, unacceptable." .
+isnt $vp->api, "Only if I plead guilty which is, of course, unacceptable." .
     "I have to worry about a three strikes law since I plan to commit future" . 
     " crimes.",
     "Api method is consistent.";
