@@ -11,7 +11,7 @@ use Moose::Util::TypeConstraints;
 
 my $abs_int = subtype as 'Int', where { $_ >= 0 };
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 $VERSION = eval $VERSION;
 
 my %cache;
@@ -173,7 +173,7 @@ WebService::VaultPress::Partner - The VaultPress Partner API Client
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 

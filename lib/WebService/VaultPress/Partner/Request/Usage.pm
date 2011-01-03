@@ -1,7 +1,7 @@
 package WebService::VaultPress::Partner::Request::Usage;
 use Moose;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 $VERSION = eval $VERSION;
 
 has api => (
@@ -22,7 +22,7 @@ WebService::VaultPress::Partner::Request::Usage - The VaultPress Partner API Cli
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
   

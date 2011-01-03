@@ -1,7 +1,7 @@
 package WebService::VaultPress::Partner::Response;
 use Moose;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 $VERSION = eval $VERSION;
 
 has api_call    => ( is => 'ro', isa => 'Str' );
@@ -26,7 +26,7 @@ WebService::VaultPress::Partner::Response - The VaultPress Partner API Client Re
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
   

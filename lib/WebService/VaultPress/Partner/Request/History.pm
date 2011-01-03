@@ -2,7 +2,7 @@ package WebService::VaultPress::Partner::Request::History;
 use Moose;
 use Moose::Util::TypeConstraints;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 $VERSION = eval $VERSION;
 
 my $abs_int     = subtype as 'Int', where { $_ >= 0 };
@@ -36,7 +36,7 @@ WebService::VaultPress::Partner::Request::History - The VaultPress Partner API C
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
   

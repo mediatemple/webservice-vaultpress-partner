@@ -1,7 +1,7 @@
 package WebService::VaultPress::Partner::Request::GoldenTicket;
 use Moose;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 $VERSION = eval $VERSION;
 
 has api => (
@@ -40,7 +40,7 @@ WebService::VaultPress::Partner::Request::GoldenTicket - The VaultPress Partner 
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
   #!/usr/bin/perl
