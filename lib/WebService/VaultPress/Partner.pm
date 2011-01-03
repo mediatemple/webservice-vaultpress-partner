@@ -59,7 +59,7 @@ sub create_golden_ticket {
             key   => $self->key,
             email => $req->email,
             fname => $req->fname,
-            lname => $req->fname,
+            lname => $req->lname,
         },
     );
 
