@@ -43,10 +43,10 @@ has _ua => (
 no Moose;
 
 # CamelCase linking to Perly methods.
-*CreateGoldenTicket     = *create_golden_ticket;
-*GetUsage               = *get_usage;
-*GetHistory             = *get_history;
-*GetRedeemedHistory     = *get_redeemed_history;
+sub CreateGoldenTicket { shift->create_golden_ticket(@_) }
+sub GetUsage           { shift->get_usage(@_) }
+sub GetHistory         { shift->get_history(@_) }
+sub GetRedeemedHistory { shift->get_redeemed_history(@_) }
 
 sub create_golden_ticket {
     my ( $self, %request ) = @_;
